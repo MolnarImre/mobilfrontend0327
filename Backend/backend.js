@@ -6,6 +6,7 @@ var connection
 var cors = require('cors')
 const app = express()
 const port = 22008
+const fs = require("fs")
 
 function dbconn(){
    connection = mysql.createConnection({
@@ -169,15 +170,23 @@ app.post('/erdekel',(req,res)=>{
     let parancs = `INSERT INTO auto_alkatresz_kateg VALUES (NULL, ${komptipus}, ${kompmarka}, "${alkatreszgyarto}", "${alkatresznev}", "${alkatreszcikkszam}", ${alkatreszar}, "${alkatreszkepnev}")`
     
     connection.query(parancs, function (err, rows, fields) {
-      if (err) 
-          console.log(err)
-		else
-      res.send("Sikerült a felvitel!")
+      if (err)
+        return console.log(err)
+
+      // Kép mentése a képek mappába
+      const imgPath = __dirname + "/kepek/" + alkatreszkepnev
+      
+      fs.writeFile(imgPath, alkatreszkepbase64, 'base64', function (err) {
+          if (err) 
+            return console.log(err)
+
+          res.send("Sikerült a felvitel!")
+      })
     })
     
     connection.end()
+})
 
-  })
 //-------------------------------------------------------------------Végpontok vége
 app.listen(port, () => {
   console.log(`Example app listening at http://nodejs.dszcbaross.edu.hu:${port}`)
