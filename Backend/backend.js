@@ -163,10 +163,10 @@ app.post('/erdekel',(req,res)=>{
 
 
  app.post('/feltoltes', (req, res) => {
-	const { komptipus, kompmarka, alkatreszgyarto, alkatresznev, alkatreszcikkszam, alkatreszar, alkatreszkepnev } = req.body
-   dbconn()
-console.log(req.body)
-    let parancs= `INSERT INTO auto_alkatresz_kateg VALUES (NULL, ${komptipus}, ${kompmarka}, "${alkatreszgyarto}", "${alkatresznev}", "${alkatreszcikkszam}", ${alkatreszar}, "${alkatreszkepnev}")`
+    const { komptipus, kompmarka, alkatreszgyarto, alkatresznev, alkatreszcikkszam, alkatreszar, alkatreszkepnev, alkatreszkepbase64 } = req.body
+    dbconn()
+
+    let parancs = `INSERT INTO auto_alkatresz_kateg VALUES (NULL, ${komptipus}, ${kompmarka}, "${alkatreszgyarto}", "${alkatresznev}", "${alkatreszcikkszam}", ${alkatreszar}, "${alkatreszkepnev}")`
     
     connection.query(parancs, function (err, rows, fields) {
       if (err) 

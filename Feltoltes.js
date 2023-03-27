@@ -33,6 +33,7 @@ export default class Feltoltes extends React.Component {
       dataSource: [],
       dataSourcetipus: [],
       image: null,
+      imageBase64: null
     };
   }
 
@@ -79,10 +80,8 @@ export default class Feltoltes extends React.Component {
 
   feltoltes = () => {
     let kepObject = this.state.image;
-    console.log(kepObject);
     let alkatreszkepnevLength = kepObject.split("/").length;
     const alkatreszkepnev = kepObject.split("/")[alkatreszkepnevLength - 1];
-    console.log(alkatreszkepnev);
 
     var bemenet = {
       alkatreszgyarto: this.state.alkatreszgyarto,
@@ -92,6 +91,7 @@ export default class Feltoltes extends React.Component {
       kompmarka: this.state.valaszto1,
       komptipus: this.state.valaszto2,
       alkatreszkepnev: alkatreszkepnev,
+      alkatreszkepbase64: this.state.imageBase64
     };
 
     fetch(Ip.ipcim + "feltoltes", {
@@ -126,7 +126,10 @@ export default class Feltoltes extends React.Component {
 
       // Set image
       if (!result.canceled) {
-        this.setState({ image: result.assets[0].uri });
+        const imageObj = result.assets[0];
+        
+        this.setState({ image: imageObj.uri });
+        this.setState({ imageBase64: imageObj.base64 });
       }
 
       // Set image data (base64)
